@@ -6,57 +6,37 @@ import kotlinx.datetime.Clock
 
 class TasksRepository {
 
-    fun getAllTasks(): List<Task> {
-        return listOf(
+    val allTasks = Tasks.list
+
+    fun createNewTaskWith(name: String) {
+        Tasks.create(
             Task(
-                id = 1,
-                name = "Buy groceries",
-                status = Status.CREATED,
-                createdAt = Clock.System.now(),
-                updatedAt = Clock.System.now()
-            ),
-            Task(
-                id = 2,
-                name = "Go to the doctor",
-                status = Status.CREATED,
-                createdAt = Clock.System.now(),
-                updatedAt = Clock.System.now()
-            ),
-            Task(
-                id = 3,
-                name = "Eat dinner out",
-                status = Status.CREATED,
-                createdAt = Clock.System.now(),
-                updatedAt = Clock.System.now()
-            ),
-            Task(
-                id = 4,
-                name = "Go to the doctor",
-                status = Status.CREATED,
-                createdAt = Clock.System.now(),
-                updatedAt = Clock.System.now()
-            ),
-            Task(
-                id = 5,
-                name = "Go to the doctor",
-                status = Status.CREATED,
-                createdAt = Clock.System.now(),
-                updatedAt = Clock.System.now()
-            ),
-            Task(
-                id = 6,
-                name = "Go to the doctor",
-                status = Status.CREATED,
-                createdAt = Clock.System.now(),
-                updatedAt = Clock.System.now()
-            ),
-            Task(
-                id = 7,
-                name = "Go to the doctor",
+                id = Tasks.nextId(),
+                name = name,
                 status = Status.CREATED,
                 createdAt = Clock.System.now(),
                 updatedAt = Clock.System.now()
             ),
         )
+    }
+
+    fun updateTask(name: String) {
+        // TODO
+    }
+
+    fun completeTask(task: Task) {
+        Tasks.edit(
+            task.copy(status = Status.DONE)
+        )
+    }
+
+    fun unCompleteTask(task: Task) {
+        Tasks.edit(
+            task.copy(status = Status.CREATED)
+        )
+    }
+
+    fun deleteTask(task: Task) {
+        Tasks.delete(task)
     }
 }
