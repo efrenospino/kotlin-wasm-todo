@@ -17,8 +17,12 @@ import dev.efrenospino.kwtodo.ui.components.*
 @Composable
 fun Home(tasksRepository: TasksRepository) {
 
-    val allTasks = remember { tasksRepository.allTasks }
-    var taskBeingEdited: Task? by remember { mutableStateOf(null) }
+    var allTasks = remember { emptyList<Task>() }
+    var editableTask: Task? by remember { mutableStateOf(null) }
+
+    LaunchedEffect(true) {
+        allTasks = tasksRepository.getAllTasks()
+    }
 
     Scaffold(topBar = {
         TopAppBar {
@@ -41,22 +45,22 @@ fun Home(tasksRepository: TasksRepository) {
             ) {
 
                 items(allTasks) { task ->
-                    if (taskBeingEdited == task) {
+                    if (editableTask == task) {
                         EditableTaskCard(text = task.name) {
                             SaveButton {
-                                tasksRepository.updateTask(it)
+
                             }
                             CancelButton {
-                                taskBeingEdited = null
+                                editableTask = null
                             }
                         }
                     } else {
                         TaskCard(
                             task = task,
                             onEditClick = {
-                                taskBeingEdited = task
+                                editableTask = task
                             }, onDeleteClick = {
-                                tasksRepository.deleteTask(task)
+
                             }
                         )
                     }
@@ -65,7 +69,7 @@ fun Home(tasksRepository: TasksRepository) {
                 item {
                     EditableTaskCard {
                         CreateButton {
-                            tasksRepository.createNewTaskWith(it)
+
                         }
                     }
                 }

@@ -8,7 +8,7 @@ import dev.efrenospino.kwtodo.ui.Home
 @Composable
 fun App() {
     MaterialTheme {
-        Home(tasksRepository = TasksRepository())
+        Home(tasksRepository = TasksRepository(tasksApi = getTasksApi()))
     }
 }
 
