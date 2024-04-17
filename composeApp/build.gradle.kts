@@ -1,9 +1,12 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
+import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import java.util.*
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.buildKonfig)
 }
 
 kotlin {
@@ -25,11 +28,39 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.ui)
+            implementation(compose.components.resources)
             implementation(libs.kotlinx.datetime)
-            @OptIn(ExperimentalComposeLibrary::class) implementation(compose.components.resources)
+            implementation(libs.supabase.postgres)
         }
 
     }
+}
+
+buildkonfig {
+    packageName = "dev.efrenospino.kwtodo"
+
+    val localPropsFile = rootProject.file("local.properties")
+    val localProperties = Properties()
+    if (localPropsFile.exists()) {
+        runCatching {
+            localProperties.load(localPropsFile.inputStream())
+        }.getOrElse {
+            it.printStackTrace()
+        }
+    }
+    defaultConfigs {
+        buildConfigField(
+            FieldSpec.Type.STRING,
+            "SUPABASE_KEY",
+            localProperties["supabase.key"]?.toString() ?: ""
+        )
+        buildConfigField(
+            FieldSpec.Type.STRING,
+            "SUPABASE_URL",
+            localProperties["supabase.url"]?.toString() ?: ""
+        )
+    }
+
 }
 
 compose.experimental {

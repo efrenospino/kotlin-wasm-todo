@@ -7,7 +7,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import dev.efrenospino.kwtodo.domain.Status
 import dev.efrenospino.kwtodo.domain.Task
 
 @Composable
@@ -52,7 +51,7 @@ fun TaskCard(task: Task, onEditClick: () -> Unit = {}, onDeleteClick: () -> Unit
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(checked = task.status == Status.DONE, onCheckedChange = {})
+                Checkbox(checked = task.completed, onCheckedChange = {})
                 Text(text = task.name)
             }
             Row(

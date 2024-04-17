@@ -17,7 +17,7 @@ import dev.efrenospino.kwtodo.ui.components.*
 @Composable
 fun Home(tasksRepository: TasksRepository) {
 
-    var allTasks = remember { emptyList<Task>() }
+    var allTasks by remember { mutableStateOf(emptyList<Task>()) }
     var editableTask: Task? by remember { mutableStateOf(null) }
 
     LaunchedEffect(true) {
