@@ -52,12 +52,12 @@ buildkonfig {
         buildConfigField(
             FieldSpec.Type.STRING,
             "SUPABASE_KEY",
-            localProperties["supabase.key"]?.toString() ?: ""
+            localProperties["supabase.key"]?.toString() ?: System.getenv("SUPABASE_KEY")
         )
         buildConfigField(
             FieldSpec.Type.STRING,
             "SUPABASE_URL",
-            localProperties["supabase.url"]?.toString() ?: ""
+            localProperties["supabase.url"]?.toString() ?: System.getenv("SUPABASE_URL")
         )
     }
 
