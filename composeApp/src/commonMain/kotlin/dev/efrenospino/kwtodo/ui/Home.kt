@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.dp
 import dev.efrenospino.kwtodo.data.TasksRepository
 import dev.efrenospino.kwtodo.domain.Task
 import dev.efrenospino.kwtodo.ui.components.*
+import dev.efrenospino.kwtodo.util.delete
+import dev.efrenospino.kwtodo.util.replace
 import kotlinx.coroutines.launch
 
 @Composable
@@ -52,9 +54,15 @@ fun Home(tasksRepository: TasksRepository) {
 
                 items(allTasks) { task ->
                     if (editableTask == task) {
-                        EditableTaskCard(text = task.name) {
+                        EditableTaskCard(text = task.name) { name ->
                             SaveButton {
-
+                                coroutineScope.launch {
+                                    tasksRepository.updateTask(task, name).let { completedTask ->
+                                        allTasks = allTasks.replace(newValue = completedTask) {
+                                            it.id == completedTask.id
+                                        }
+                                    }
+                                }
                             }
                             CancelButton {
                                 editableTask = null
@@ -65,8 +73,22 @@ fun Home(tasksRepository: TasksRepository) {
                             task = task,
                             onEditClick = {
                                 editableTask = task
-                            }, onDeleteClick = {
-
+                            },
+                            onCheckboxClick = { completed ->
+                                coroutineScope.launch {
+                                    tasksRepository.completeTask(task, completed).let { completedTask ->
+                                        allTasks = allTasks.replace(newValue = completedTask) {
+                                            it.id == completedTask.id
+                                        }
+                                    }
+                                }
+                            },
+                            onDeleteClick = {
+                                coroutineScope.launch {
+                                    tasksRepository.deleteTask(task).let { deletedTask ->
+                                        allTasks = allTasks.delete(deletedTask)
+                                    }
+                                }
                             }
                         )
                     }
@@ -75,7 +97,9 @@ fun Home(tasksRepository: TasksRepository) {
                 item {
                     EditableTaskCard {
                         CreateButton {
-
+                            coroutineScope.launch {
+                                allTasks += tasksRepository.newTask(it)
+                            }
                         }
                     }
                 }
@@ -83,5 +107,4 @@ fun Home(tasksRepository: TasksRepository) {
         }
     }
 }
-
 

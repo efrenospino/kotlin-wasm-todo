@@ -45,13 +45,18 @@ fun EditableTaskCard(text: String = "", action: @Composable RowScope.(String) ->
 }
 
 @Composable
-fun TaskCard(task: Task, onEditClick: () -> Unit = {}, onDeleteClick: () -> Unit = {}) {
+fun TaskCard(
+    task: Task,
+    onEditClick: () -> Unit = {},
+    onCheckboxClick: (Boolean) -> Unit = {},
+    onDeleteClick: () -> Unit = {},
+) {
     Card(Modifier.fillMaxWidth()) {
         Row(Modifier.fillMaxWidth().padding(10.dp)) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(checked = task.completed, onCheckedChange = {})
+                Checkbox(checked = task.completed, onCheckedChange = onCheckboxClick)
                 Text(text = task.name)
             }
             Row(

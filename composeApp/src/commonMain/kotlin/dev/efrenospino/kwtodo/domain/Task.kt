@@ -5,9 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Task(
-    val id: Int,
+    val id: Int? = null,
     val name: String,
-    val completed: Boolean,
+    val completed: Boolean = false,
     @SerialName("created_at") val createdAt: String,
     @SerialName("updated_at") val updatedAt: String,
 )
