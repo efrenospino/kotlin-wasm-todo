@@ -49,7 +49,9 @@ fun Home(tasksRepository: TasksRepository) {
             }
 
             LazyColumn(
-                modifier = Modifier.padding(10.dp).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.padding(10.dp).fillMaxHeight(),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
 
                 items(allTasks) { task ->
@@ -91,6 +93,12 @@ fun Home(tasksRepository: TasksRepository) {
                                 }
                             }
                         )
+                    }
+                }
+
+                if (allTasks.isEmpty()) {
+                    item {
+                        Text("No results")
                     }
                 }
 

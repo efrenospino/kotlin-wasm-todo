@@ -44,6 +44,11 @@ fun SearchBox(onValueChange: (String) -> Unit = {}) {
                     contentDescription = "Clear",
                     modifier = Modifier.clickable {
                         searchTaskText = ""
+                        searchJob?.cancel()
+                        searchJob = coroutineScope.launch {
+                            delay(500)
+                            onValueChange(searchTaskText)
+                        }
                     }
                 )
             }
