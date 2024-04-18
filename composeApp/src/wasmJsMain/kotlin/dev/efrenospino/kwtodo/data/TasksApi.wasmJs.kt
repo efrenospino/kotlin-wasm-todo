@@ -15,7 +15,11 @@ class WasmTasksApi : TasksApi {
         install(Postgrest)
     }
 
-    override suspend fun getAllTasks(): List<Task> {
-        return supabase.from("tasks").select().decodeList<Task>()
+    override suspend fun getAllTasks(search: String): List<Task> {
+        return supabase.from("tasks").select {
+            filter {
+                Task::name ilike "%$search%"
+            }
+        }.decodeList<Task>()
     }
 }

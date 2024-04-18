@@ -13,15 +13,17 @@ import androidx.compose.ui.unit.dp
 import dev.efrenospino.kwtodo.data.TasksRepository
 import dev.efrenospino.kwtodo.domain.Task
 import dev.efrenospino.kwtodo.ui.components.*
+import kotlinx.coroutines.launch
 
 @Composable
 fun Home(tasksRepository: TasksRepository) {
 
     var allTasks by remember { mutableStateOf(emptyList<Task>()) }
     var editableTask: Task? by remember { mutableStateOf(null) }
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(true) {
-        allTasks = tasksRepository.getAllTasks()
+        allTasks = tasksRepository.getAllTasks(search = "")
     }
 
     Scaffold(topBar = {
@@ -38,7 +40,11 @@ fun Home(tasksRepository: TasksRepository) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            SearchBox()
+            SearchBox {
+                coroutineScope.launch {
+                    allTasks = tasksRepository.getAllTasks(search = it)
+                }
+            }
 
             LazyColumn(
                 modifier = Modifier.padding(10.dp).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(10.dp),
