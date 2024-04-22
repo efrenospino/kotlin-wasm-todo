@@ -2,61 +2,72 @@ package dev.efrenospino.kwtodo.data
 
 import dev.efrenospino.kwtodo.BuildKonfig
 import dev.efrenospino.kwtodo.domain.Task
-import io.github.jan.supabase.createSupabaseClient
-import io.github.jan.supabase.postgrest.Postgrest
-import io.github.jan.supabase.postgrest.from
-import io.github.jan.supabase.postgrest.query.Order
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.datetime.Clock
+import kotlinx.serialization.json.Json
 
 class WasmTasksApi : TasksApi {
 
-    private val supabase = createSupabaseClient(
-        supabaseUrl = BuildKonfig.SUPABASE_URL,
-        supabaseKey = BuildKonfig.SUPABASE_KEY
-    ) {
-        install(Postgrest)
+    private val client = HttpClient {
+        defaultRequest {
+            headers {
+                append("apiKey", "Bearer ${BuildKonfig.SUPABASE_KEY}")
+                append(HttpHeaders.Authorization, "Bearer ${BuildKonfig.SUPABASE_KEY}")
+            }
+        }
+        install(ContentNegotiation) {
+            json(Json {
+                isLenient = true
+                ignoreUnknownKeys = true
+            })
+        }
     }
 
     override suspend fun getAllTasks(search: String): List<Task> {
-        return supabase.from("tasks").select {
-            order(column = "id", order = Order.ASCENDING)
-            filter {
-                Task::name ilike "%$search%"
-            }
-        }.decodeList<Task>()
+        return client.get("${BuildKonfig.SUPABASE_URL}/rest/v1/tasks?select=*").body<List<Task>>()
     }
 
     override suspend fun save(name: String): Task {
-        val newTask = Task(
-            name = name,
-            createdAt = Clock.System.now().toString(),
-            updatedAt = Clock.System.now().toString(),
-        )
-        return supabase.from("tasks").insert(newTask) {
-            select()
-        }.decodeSingle<Task>()
+        return client.post("${BuildKonfig.SUPABASE_URL}/rest/v1/tasks") {
+            headers {
+                append(HttpHeaders.ContentType, "application/json")
+                append(HttpHeaders.Prefer, "return=representation")
+            }
+            setBody(
+                Task(
+                    name = name,
+                    createdAt = Clock.System.now().toString(),
+                    updatedAt = Clock.System.now().toString(),
+                )
+            )
+        }.body<List<Task>>().first()
     }
 
     override suspend fun save(task: Task): Task {
-        return supabase.from("tasks").update({
-            Task::name setTo task.name
-            Task::completed setTo task.completed
-            Task::updatedAt setTo Clock.System.now().toString()
-        }) {
-            select()
-            filter {
-                Task::id eq task.id
+        return client.patch("${BuildKonfig.SUPABASE_URL}/rest/v1/tasks?id=eq.${task.id}") {
+            headers {
+                append(HttpHeaders.ContentType, "application/json")
+                append(HttpHeaders.Prefer, "return=representation")
             }
-        }.decodeSingle()
+            setBody(
+                task.copy(updatedAt = Clock.System.now().toString())
+            )
+        }.body<List<Task>>().first()
     }
 
     override suspend fun delete(task: Task): Task {
-        return supabase.from("tasks").delete {
-            select()
-            filter {
-                Task::id eq task.id
+        return client.delete("${BuildKonfig.SUPABASE_URL}/rest/v1/tasks?id=eq.${task.id}") {
+            headers {
+                append(HttpHeaders.ContentType, "application/json")
+                append(HttpHeaders.Prefer, "return=representation")
             }
-        }.decodeSingle<Task>()
+        }.body<List<Task>>().first()
     }
 
 }

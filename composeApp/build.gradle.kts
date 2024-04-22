@@ -30,7 +30,9 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(libs.kotlinx.datetime)
-            implementation(libs.supabase.postgres)
+            implementation(libs.ktor.core)
+            implementation(libs.ktor.contentNegotiation)
+            implementation(libs.ktor.json)
         }
 
     }
