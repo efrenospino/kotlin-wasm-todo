@@ -29,7 +29,7 @@ class WasmTasksApi : TasksApi {
     }
 
     override suspend fun getAllTasks(search: String): List<Task> {
-        return client.get("${BuildKonfig.SUPABASE_URL}/rest/v1/tasks?select=*").body<List<Task>>()
+        return client.get("${BuildKonfig.SUPABASE_URL}/rest/v1/tasks?select=*").body<List<Task>>().sortedBy { it.id }
     }
 
     override suspend fun save(name: String): Task {
@@ -43,6 +43,7 @@ class WasmTasksApi : TasksApi {
                     name = name,
                     createdAt = Clock.System.now().toString(),
                     updatedAt = Clock.System.now().toString(),
+                    completed = false
                 )
             )
         }.body<List<Task>>().first()
