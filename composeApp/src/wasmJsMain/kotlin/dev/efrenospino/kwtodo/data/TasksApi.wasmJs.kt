@@ -17,8 +17,7 @@ class WasmTasksApi : TasksApi {
     private val client = HttpClient {
         defaultRequest {
             headers {
-                append("apiKey", "Bearer ${BuildKonfig.SUPABASE_KEY}")
-                append(HttpHeaders.Authorization, "Bearer ${BuildKonfig.SUPABASE_KEY}")
+                append("apiKey", BuildKonfig.SUPABASE_KEY)
             }
         }
         install(ContentNegotiation) {
