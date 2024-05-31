@@ -12,7 +12,8 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.datetime.Clock
 import kotlinx.serialization.json.Json
 
-class WasmTasksApi : TasksApi {
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+actual object TasksApi {
 
     private val client = HttpClient {
         defaultRequest {
@@ -27,12 +28,11 @@ class WasmTasksApi : TasksApi {
             })
         }
     }
-
-    override suspend fun getAllTasks(search: String): List<Task> {
+    actual suspend fun getAllTasks(search: String): List<Task> {
         return client.get("${BuildKonfig.SUPABASE_URL}/rest/v1/tasks?select=*").body<List<Task>>().sortedBy { it.id }
     }
 
-    override suspend fun save(name: String): Task {
+    actual suspend fun save(name: String): Task {
         return client.post("${BuildKonfig.SUPABASE_URL}/rest/v1/tasks") {
             headers {
                 append(HttpHeaders.ContentType, "application/json")
@@ -49,7 +49,7 @@ class WasmTasksApi : TasksApi {
         }.body<List<Task>>().first()
     }
 
-    override suspend fun save(task: Task): Task {
+    actual suspend fun save(task: Task): Task {
         return client.patch("${BuildKonfig.SUPABASE_URL}/rest/v1/tasks?id=eq.${task.id}") {
             headers {
                 append(HttpHeaders.ContentType, "application/json")
@@ -61,7 +61,7 @@ class WasmTasksApi : TasksApi {
         }.body<List<Task>>().first()
     }
 
-    override suspend fun delete(task: Task): Task {
+    actual suspend fun delete(task: Task): Task {
         return client.delete("${BuildKonfig.SUPABASE_URL}/rest/v1/tasks?id=eq.${task.id}") {
             headers {
                 append(HttpHeaders.ContentType, "application/json")
@@ -69,5 +69,4 @@ class WasmTasksApi : TasksApi {
             }
         }.body<List<Task>>().first()
     }
-
 }
