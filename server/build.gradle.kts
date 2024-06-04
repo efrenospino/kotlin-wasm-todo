@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
+    alias(libs.plugins.kotlinSerialization)
     application
 }
 
@@ -8,6 +9,7 @@ group = "dev.efrenospino.kwtodo"
 version = "1.0.0-SNAPSHOT"
 
 dependencies {
+    implementation(project(":shared"))
     implementation(libs.ktor.json)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.content.negotiation)
