@@ -30,8 +30,8 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(libs.kotlinx.datetime)
-            implementation(libs.ktor.core)
-            implementation(libs.ktor.contentNegotiation)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.json)
         }
 
