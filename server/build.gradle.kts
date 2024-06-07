@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.sqldelight)
     application
 }
 
@@ -17,7 +18,17 @@ dependencies {
     implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.json)
     implementation(libs.logback)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.sqldelight.driver)
     testImplementation(kotlin("test"))
+}
+
+sqldelight {
+    databases {
+        create("TasksDB") {
+            packageName.set("dev.efrenospino.kwtodo.server.db")
+        }
+    }
 }
 
 application {

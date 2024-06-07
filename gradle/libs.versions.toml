@@ -7,18 +7,21 @@ kotlinx-datetime = "0.5.0"
 kotlin = "1.9.21"
 ktor-client = "3.0.0-wasm2"
 ktor-server = "3.0.0-beta-1"
+sqldelight = "2.0.2"
 
 [libraries]
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 ktor-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor-client" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-client" }
+ktor-client-cors = { module = "io.ktor:ktor-client-cors", version.ref = "ktor-client" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor-client" }
 ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation-jvm" }
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm" }
 ktor-server-cors = { module = "io.ktor:ktor-server-cors-jvm" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty" }
 ktor-server-json = { module = "io.ktor:ktor-serialization-kotlinx-json-jvm" }
+sqldelight-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
 [plugins]
@@ -28,3 +31,4 @@ kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor-server" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 buildKonfig = { id = "com.codingfeline.buildkonfig", version.ref = "build-konfig" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }

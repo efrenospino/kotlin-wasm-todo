@@ -11,10 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.efrenospino.kwtodo.data.TasksRepository
-import dev.efrenospino.kwtodo.domain.Task
+import dev.efrenospino.kwtodo.models.Task
 import dev.efrenospino.kwtodo.ui.components.*
-import dev.efrenospino.kwtodo.util.delete
-import dev.efrenospino.kwtodo.util.replace
 import kotlinx.coroutines.launch
 
 @Composable
@@ -59,10 +57,8 @@ fun Home(tasksRepository: TasksRepository) {
                         EditableTaskCard(text = task.name) { name ->
                             SaveButton {
                                 coroutineScope.launch {
-                                    tasksRepository.updateTask(task, name).let { completedTask ->
-                                        allTasks = allTasks.replace(newValue = completedTask) {
-                                            it.id == completedTask.id
-                                        }
+                                    tasksRepository.updateTask(task, name).let { updatedTasks ->
+                                        allTasks = updatedTasks
                                     }
                                 }
                             }
@@ -78,17 +74,15 @@ fun Home(tasksRepository: TasksRepository) {
                             },
                             onCheckboxClick = { completed ->
                                 coroutineScope.launch {
-                                    tasksRepository.completeTask(task, completed).let { completedTask ->
-                                        allTasks = allTasks.replace(newValue = completedTask) {
-                                            it.id == completedTask.id
-                                        }
+                                    tasksRepository.completeTask(task, completed).let { updatedTasks ->
+                                        allTasks = updatedTasks
                                     }
                                 }
                             },
                             onDeleteClick = {
                                 coroutineScope.launch {
-                                    tasksRepository.deleteTask(task).let { deletedTask ->
-                                        allTasks = allTasks.delete(deletedTask)
+                                    tasksRepository.deleteTask(task).let { updatedTasks ->
+                                        allTasks = updatedTasks
                                     }
                                 }
                             }
@@ -106,7 +100,9 @@ fun Home(tasksRepository: TasksRepository) {
                     EditableTaskCard {
                         CreateButton {
                             coroutineScope.launch {
-                                allTasks += tasksRepository.newTask(it)
+                                tasksRepository.newTask(it).let { updatedTasks ->
+                                    allTasks = updatedTasks
+                                }
                             }
                         }
                     }

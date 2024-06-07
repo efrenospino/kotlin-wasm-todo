@@ -1,12 +1,9 @@
-import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
-import java.util.*
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.buildKonfig)
 }
 
 kotlin {
@@ -37,33 +34,6 @@ kotlin {
         }
 
     }
-}
-
-buildkonfig {
-    packageName = "dev.efrenospino.kwtodo"
-
-    val localPropsFile = rootProject.file("local.properties")
-    val localProperties = Properties()
-    if (localPropsFile.exists()) {
-        runCatching {
-            localProperties.load(localPropsFile.inputStream())
-        }.getOrElse {
-            it.printStackTrace()
-        }
-    }
-    defaultConfigs {
-        buildConfigField(
-            FieldSpec.Type.STRING,
-            "SUPABASE_KEY",
-            localProperties["supabase.key"]?.toString() ?: ""
-        )
-        buildConfigField(
-            FieldSpec.Type.STRING,
-            "SUPABASE_URL",
-            localProperties["supabase.url"]?.toString() ?: ""
-        )
-    }
-
 }
 
 compose.experimental {
