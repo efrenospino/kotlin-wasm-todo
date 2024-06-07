@@ -19,10 +19,13 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
       - name: Setup Env
-        run: echo 'supabase.key=${{ secrets.SUPABASE_KEY }}' > ./local.properties &&
-          echo 'supabase.url=${{ secrets.SUPABASE_URL }}' >> ./local.properties
-      - name: Build with Gradle Wrapper
-        run: ./gradlew wasmJsBrowserDistribution
+        run: echo 'server.schema=${{ secrets.SERVER_SCHEMA }}' > ./local.properties &&
+          echo 'server.host=${{ secrets.SERVER_HOST }}' >> ./local.properties &&
+          echo 'server.port=${{ secrets.SERVER_PORT }}' >> ./local.properties
+      - name: Start server
+        run: ./gradlew :server:run
+      - name: Start web app
+        run: ./gradlew :composeApp:wasmJsBrowserDistribution
       - name: Setup Pages
         uses: actions/configure-pages@v5.0.0
       - name: Upload Artifact
