@@ -1,18 +1,10 @@
-CREATE TABLE task (
+CREATE TABLE IF NOT EXISTS task (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     completed INTEGER NOT NULL,
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
 );
-
-INSERT INTO task (name, completed, created_at, updated_at) VALUES
-    ('Buy groceries', 0, '2024-05-01T10:15:30', '2024-05-01T10:15:30'),
-    ('Walk the dog', 1, '2024-05-02T08:00:00', '2024-05-02T09:00:00'),
-    ('Read a book', 0, '2024-05-03T14:30:00', '2024-05-03T15:00:00'),
-    ('Write Kotlin code', 1, '2024-05-04T11:00:00', '2024-05-04T12:30:00'),
-    ('Exercise', 0, '2024-05-05T07:00:00', '2024-05-05T08:00:00');
-
 
 selectAll:
 SELECT * FROM task WHERE name LIKE '%' || :search || '%';

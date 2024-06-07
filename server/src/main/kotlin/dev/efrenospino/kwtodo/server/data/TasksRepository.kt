@@ -1,21 +1,24 @@
 package dev.efrenospino.kwtodo.server.data
 
 import app.cash.sqldelight.db.SqlDriver
-import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
+import dev.efrenospino.kwtodo.database.TasksDatabase
+import dev.efrenospino.kwtodo.database.TasksDatabaseDriver
 import dev.efrenospino.kwtodo.models.Task
-import dev.efrenospino.kwtodo.server.db.TasksDB
+import dev.efrenospino.kwtodo.server.util.mapTaskToSharedModel
+import dev.efrenospino.kwtodo.server.util.singleTransactionWithResult
+import dev.efrenospino.kwtodo.server.util.toLong
 
 object TasksRepository {
 
-    private val driver: SqlDriver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
-    private val tasksDB: TasksDB = TasksDB(driver)
+    private val driver: SqlDriver = TasksDatabaseDriver.instance()
+    private val tasksDB: TasksDatabase = TasksDatabase(driver)
 
     init {
-        TasksDB.Schema.create(driver)
+        TasksDatabase.Schema.create(driver)
     }
 
     fun getAll(search: String = ""): List<Task> {
-        return tasksDB.taskQueries.selectAll(search, ::mapToSharedModel).executeAsList()
+        return tasksDB.taskQueries.selectAll(search, ::mapTaskToSharedModel).executeAsList()
     }
 
     fun create(name: String): List<Task> {
@@ -44,29 +47,5 @@ object TasksRepository {
             tasksDB.taskQueries.deleteById(taskId)
         }
     }
-
-    private fun TasksDB.singleTransactionWithResult(runTransaction: () -> Unit): List<Task> {
-        return transactionWithResult {
-            runTransaction()
-            getAll()
-        }
-    }
-
-    private fun mapToSharedModel(
-        id: Long,
-        name: String,
-        completed: Long,
-        createdAt: String,
-        updatedAt: String,
-    ): Task = Task(
-        id.toInt(), name, completed == 1L, createdAt, updatedAt
-    )
 }
 
-private fun Boolean?.toLong(): Long? {
-    return when (this) {
-        true -> 1L
-        false -> 0L
-        null -> null
-    }
-}
