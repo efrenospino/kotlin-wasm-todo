@@ -43,3 +43,6 @@ bin/
 
 # Properties
 local.properties
+
+# DB file
+kwtodo.db

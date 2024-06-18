@@ -39,17 +39,17 @@ buildkonfig {
         buildConfigField(
             FieldSpec.Type.STRING,
             "SERVER_SCHEMA",
-            localProperties["server.schema"]?.toString() ?: ""
+            localProperties["server.schema"]?.toString() ?: System.getenv("SERVER_SCHEMA")
         )
         buildConfigField(
             FieldSpec.Type.STRING,
             "SERVER_HOST",
-            localProperties["server.host"]?.toString() ?: ""
+            localProperties["server.host"]?.toString() ?: System.getenv("SERVER_HOST")
         )
         buildConfigField(
             FieldSpec.Type.INT,
             "SEVER_PORT",
-            localProperties["server.port"]?.toString() ?: ""
+            localProperties["server.port"]?.toString() ?: System.getenv("SEVER_PORT")
         )
     }
 

@@ -5,5 +5,8 @@ import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 
 object TasksDatabaseDriver {
 
-    fun instance(): SqlDriver = JdbcSqliteDriver("jdbc:sqlite:tasks.db")
+    fun instance(path: String = "jdbc:sqlite:kwtodo.db"): SqlDriver {
+        return JdbcSqliteDriver(path)
+    }
+
 }

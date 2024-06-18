@@ -1,13 +1,12 @@
-FROM gradle:8.4.0-jdk17 AS builder
-
-COPY --chown=gradle:gradle . /home/gradle/src
-WORKDIR /home/gradle/src
-
-RUN gradle wasmJsBrowserDistribution --no-daemon
+FROM gradle:8.4.0-jdk17 AS build
+WORKDIR /app
+COPY --chown=gradle:gradle . /app
+RUN gradle :server:installDist --no-daemon
+RUN gradle :composeApp:wasmJsBrowserDistribution --no-daemon
 
 FROM nginx:alpine
-
-COPY --from=builder /home/gradle/src/composeApp/build/dist/wasmJs/productionExecutable/ /usr/share/nginx/html
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+RUN apk add --no-cache openjdk17-jre
+COPY --from=build /app/server/build/install/server /app/server
+COPY --from=build /app/composeApp/build/dist/wasmJs/productionExecutable/ /usr/share/nginx/html
+EXPOSE 80 8080
+CMD /app/server/bin/server & nginx -g 'daemon off;'
