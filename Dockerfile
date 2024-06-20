@@ -1,6 +1,6 @@
 FROM openjdk:17.0.2-jdk-slim AS build
 WORKDIR /app
-COPY --chown=gradle:gradle . /app
+COPY . .
 RUN ./gradlew :server:installDist --no-daemon
 RUN ./gradlew :composeApp:wasmJsBrowserDistribution --no-daemon
 
