@@ -1,6 +1,7 @@
 FROM openjdk:17.0.2-jdk-slim AS build
 WORKDIR /app
 COPY . .
+RUN chmod +x ./gradlew
 RUN ./gradlew :server:installDist --no-daemon
 RUN ./gradlew :composeApp:wasmJsBrowserDistribution --no-daemon
 
