@@ -1,8 +1,19 @@
 FROM gradle:8.4.0-jdk17  AS build
+
+ARG SERVER_SCHEMA=http
+ARG SERVER_HOST=0.0.0.0
+ARG SERVER_PORT=8080
+
+ENV SERVER_SCHEMA=${SERVER_SCHEMA}
+ENV SERVER_HOST=${SERVER_HOST}
+ENV SERVER_PORT=${SERVER_PORT}
+
 WORKDIR /app
 COPY . .
+
 RUN gradle :server:installDist --no-daemon
 RUN gradle :composeApp:wasmJsBrowserDistribution --no-daemon
+
 
 FROM nginx:alpine
 RUN apk add --no-cache openjdk17-jre
