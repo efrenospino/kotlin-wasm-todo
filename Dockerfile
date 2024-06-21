@@ -1,4 +1,4 @@
-FROM openjdk:17.0.2-jdk-slim AS build
+FROM gradle:jdk17 AS build
 WORKDIR /app
 COPY . .
 RUN chmod +x ./gradlew
