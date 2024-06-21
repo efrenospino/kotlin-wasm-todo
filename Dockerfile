@@ -11,9 +11,7 @@ ENV SERVER_PORT=${SERVER_PORT}
 WORKDIR /app
 COPY . .
 
-RUN gradle :server:installDist --no-daemon
-RUN gradle :composeApp:wasmJsBrowserDistribution --no-daemon
-
+RUN gradle :server:installDist :composeApp:wasmJsBrowserDistribution --no-daemon 
 
 FROM nginx:alpine
 RUN apk add --no-cache openjdk17-jre
