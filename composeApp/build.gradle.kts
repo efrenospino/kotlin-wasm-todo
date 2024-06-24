@@ -1,9 +1,11 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.buildKonfig)
 }
 
 kotlin {
@@ -38,4 +40,17 @@ kotlin {
 
 compose.experimental {
     web.application {}
+}
+
+buildkonfig {
+    packageName = "dev.efrenospino.kwtodo"
+
+    defaultConfigs {
+        buildConfigField(
+            FieldSpec.Type.STRING,
+            "API_URL",
+            System.getenv("API_URL") ?: "http://0.0.0.0:8080"
+        )
+    }
+
 }

@@ -1,5 +1,6 @@
 package dev.efrenospino.kwtodo.data
 
+import dev.efrenospino.kwtodo.BuildKonfig
 import dev.efrenospino.kwtodo.models.Task
 import dev.efrenospino.kwtodo.models.api.TaskUpdate
 import io.ktor.client.*
@@ -24,7 +25,7 @@ object TasksApi {
             )
         }
         defaultRequest {
-            url("http://0.0.0.0:8080")
+            url(BuildKonfig.API_URL)
         }
     }
 
