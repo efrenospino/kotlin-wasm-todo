@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -18,34 +18,5 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
-      - name: Setup Env
-        run: echo 'server.schema=${{ secrets.SERVER_SCHEMA }}' > ./local.properties &&
-          echo 'server.host=${{ secrets.SERVER_HOST }}' >> ./local.properties &&
-          echo 'server.port=${{ secrets.SERVER_PORT }}' >> ./local.properties
       - name: Start server
-        run: ./gradlew :server:run
-      - name: Start web app
-        run: ./gradlew :composeApp:wasmJsBrowserDistribution
-      - name: Setup Pages
-        uses: actions/configure-pages@v5.0.0
-      - name: Upload Artifact
-        uses: actions/upload-pages-artifact@v3.0.1
-        with:
-          # upload entire directory
-          path: './composeApp/build/dist/wasmJs/productionExecutable'
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{steps.deployment.outputs.page_url}}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4.0.5
-
+        run: ./gradlew test
