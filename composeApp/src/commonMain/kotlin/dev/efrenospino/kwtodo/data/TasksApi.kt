@@ -1,6 +1,5 @@
 package dev.efrenospino.kwtodo.data
 
-import dev.efrenospino.kwtodo.Constants
 import dev.efrenospino.kwtodo.models.Task
 import dev.efrenospino.kwtodo.models.api.TaskUpdate
 import io.ktor.client.*
@@ -25,11 +24,7 @@ object TasksApi {
             )
         }
         defaultRequest {
-            url(
-                scheme = Constants.SERVER_SCHEMA,
-                host = Constants.SERVER_HOST,
-                port = Constants.SERVER_PORT,
-            )
+            url("http://0.0.0.0:8080")
         }
     }
 
