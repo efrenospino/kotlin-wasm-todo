@@ -1,6 +1,5 @@
 package dev.efrenospino.kwtodo.server
 
-import dev.efrenospino.kwtodo.Constants
 import dev.efrenospino.kwtodo.server.service.tasks
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
@@ -15,7 +14,8 @@ import kotlinx.serialization.json.Json
 fun main() {
     embeddedServer(
         Netty,
-        port = Constants.SERVER_PORT,
+        port = 8080,
+        host = "0.0.0.0",
         module = Application::module
     ).start(wait = true)
 }
