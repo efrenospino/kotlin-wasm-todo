@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.ktlint)
     application
 }
 
@@ -20,6 +21,14 @@ dependencies {
     implementation(libs.logback)
     implementation(libs.kotlinx.datetime)
     testImplementation(kotlin("test"))
+}
+
+ktlint {
+    filter {
+        exclude { entry ->
+            entry.file.path.contains("/generated/")
+        }
+    }
 }
 
 application {

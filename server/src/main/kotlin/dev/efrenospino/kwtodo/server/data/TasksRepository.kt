@@ -9,7 +9,6 @@ import dev.efrenospino.kwtodo.server.util.singleTransactionWithResult
 import dev.efrenospino.kwtodo.server.util.toLong
 
 object TasksRepository {
-
     private val driver: SqlDriver = TasksDatabaseDriver.instance()
     private val tasksDB: TasksDatabase = TasksDatabase(driver)
 
@@ -27,13 +26,18 @@ object TasksRepository {
         }
     }
 
-    fun update(taskId: Long, name: String?, completed: Boolean?): List<Task> {
+    fun update(
+        taskId: Long,
+        name: String?,
+        completed: Boolean?
+    ): List<Task> {
         return tasksDB.singleTransactionWithResult {
             val task = tasksDB.taskQueries.selectOne(id = taskId).executeAsOne()
-            val updatedTask = task.copy(
-                name = name ?: task.name,
-                completed = completed?.toLong() ?: task.completed
-            )
+            val updatedTask =
+                task.copy(
+                    name = name ?: task.name,
+                    completed = completed?.toLong() ?: task.completed
+                )
             tasksDB.taskQueries.updateById(
                 id = taskId,
                 name = updatedTask.name,
@@ -48,4 +52,3 @@ object TasksRepository {
         }
     }
 }
-

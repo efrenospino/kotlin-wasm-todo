@@ -18,4 +18,3 @@ fun TasksDatabase.singleTransactionWithResult(runTransaction: () -> Unit): List<
         getAll()
     }
 }
-

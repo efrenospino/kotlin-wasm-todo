@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.sqldelight)
+    alias(libs.plugins.ktlint)
 }
 
 group = "dev.efrenospino.kwtodo"
@@ -10,6 +11,14 @@ dependencies {
     implementation(project(":shared"))
     implementation(libs.sqldelight.driver)
     testImplementation(kotlin("test"))
+}
+
+ktlint {
+    filter {
+        exclude { entry ->
+            entry.file.path.contains("/generated/")
+        }
+    }
 }
 
 sqldelight {
@@ -23,4 +32,3 @@ sqldelight {
 tasks.test {
     useJUnitPlatform()
 }
-

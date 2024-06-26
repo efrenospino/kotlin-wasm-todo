@@ -20,3 +20,11 @@ kotlin {
         }
     }
 }
+
+ktlint {
+    filter {
+        exclude { entry ->
+            entry.file.path.contains("/generated/")
+        }
+    }
+}

@@ -23,7 +23,6 @@ fun main() {
 }
 
 fun Application.module() {
-
     install(CORS) {
         anyHost()
 
