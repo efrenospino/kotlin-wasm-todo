@@ -9,5 +9,5 @@ data class Task(
     @SerialName("name") val name: String,
     @SerialName("completed") val completed: Boolean,
     @SerialName("created_at") val createdAt: String,
-    @SerialName("updated_at") val updatedAt: String,
+    @SerialName("updated_at") val updatedAt: String
 )
