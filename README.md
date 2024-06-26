@@ -2,13 +2,16 @@
 
 [![.github/workflows/gradle.yml](https://github.com/efrenospino/kotlin-wasm-todo/actions/workflows/gradle.yml/badge.svg)](https://github.com/efrenospino/kotlin-wasm-todo/actions/workflows/gradle.yml)
 
-A Kotlin WASM Todo Application. Built with Kotlin Multiplatform with WASM as the only target in mind. The main goal is
-to try Kotlin Multiplatform for web, specifically for WASM, to build a very simple app.
+A Kotlin Wasm Todo Application. Built with Kotlin Multiplatform with Wasm as the only target in mind. The main goal is
+to try Kotlin Multiplatform for web, specifically for Wasm, to build a very simple app.
 
 ## Features
 
-- CRUD TODOs
-- Search TODOs
+- Create
+- List
+- Update
+- Delete
+- Search
 
 ## Screenshots
 
@@ -16,43 +19,44 @@ to try Kotlin Multiplatform for web, specifically for WASM, to build a very simp
 
 ## Stack
 
-- Kotlin as main language
-- Compose multiplatform for the UI
-- Ktor for networking
-- Postgres (supabase) for data
+- Kotlin
+- Compose Multiplatform
+- Ktor
+- SQLDelight - SQLite
 
-## Architecture
+## Modules
 
-The application is totally written in Kotlin. Using Kotlin Multiplatform **expected** and **actual** declarations
-enables the project to use platform-specific APIs, in this case, the use of the Supabase SDK for WASM.
+The application is totally written in Kotlin. Each module has their own responsibilities, as described here:
 
-The whole UI code is build in `composeApp/src/commonMain/kotlin/dev/efrenospino/kwtodo/ui` where we only Compose
-Multiplatform is used.
+- database: SQLDelight bindings and database configuration.
+- server: Ktor server and application's logic
+- composeApp: Compose Multiplatform UI and Wasm setup
+- shared: Domain models
 
-[Supabase](https://supabase.com/)/[PostgREST](https://postgrest.org/en/v12/) are used for database and API.
+### About Wasm
+
+Despite Kotlin Wasm is still
+in [Alpha](https://kotlinlang.org/docs/components-stability.html#current-stability-of-kotlin-components), I decided to
+give it a try
+to [Compose Multiplatform for Web](https://github.com/Kotlin/kotlin-wasm-examples/tree/main/compose-imageviewer#compose-multiplatform-for-web)
+and build this small app for exploration.
 
 ## Running in development
 
-### Starting Supabase
+### Requisites
 
-1. Download the Supabase CLI following the steps in
-   the [installation guide](https://supabase.com/docs/guides/cli/getting-started#installing-the-supabase-cli)
-2. Run `supabase start` in the root directory of the app
+- JDK 17
 
-### Launch App
+### Setting up the database
 
-Before starting the app, make sure you are using the corresponding keys for accessing your Supabase database and update
-your **local.properties** file:
+This project uses an embedded SQLite database. Once the server is started the file will be located
+on `/server/kwtodo.db` (not included in version control).
 
-```
-supabase.url=***
-supabase.key=***
-```
+### Running the server
 
-After Supabase is set up, simply run this **gradle** command (or use InteliJ Run button):
+Run `./gradlew :server:run -t` to start the Ktor server on port 8080.
 
-```
-./gradlew wasmJsBrowserDevelopmentRun -t
-```
+### Running the Wasm application
 
-And the app will be available at http://localhost:8080/
+Run `./gradlew :composeApp:wasmJsRun -t` to start the Wasm application on port 8081 (or the next
+available port)
