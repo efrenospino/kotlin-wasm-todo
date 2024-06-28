@@ -7,11 +7,11 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun RootRoute.tasks() {
+fun RootRoute.tasks(tasksRepository: TasksRepository) {
     get("/v1/tasks") {
         call.respond(
             HttpStatusCode.OK,
-            TasksRepository.getAll(call.queryParameters["search"] ?: "")
+            tasksRepository.getAll(call.queryParameters["search"] ?: "")
         )
     }
     post("/v1/tasks") {
@@ -19,7 +19,7 @@ fun RootRoute.tasks() {
         call.checkParam(formParameters["name"]) { taskName ->
             call.respond(
                 HttpStatusCode.Created,
-                TasksRepository.create(taskName)
+                tasksRepository.create(taskName)
             )
         }
     }
@@ -28,7 +28,7 @@ fun RootRoute.tasks() {
             val taskUpdate = call.receive<TaskUpdate>()
             call.respond(
                 HttpStatusCode.OK,
-                TasksRepository.update(
+                tasksRepository.update(
                     taskId = taskId.toLong(),
                     name = taskUpdate.name,
                     completed = taskUpdate.completed
@@ -40,7 +40,7 @@ fun RootRoute.tasks() {
         call.checkParam(call.pathParameters["id"]) { taskId ->
             call.respond(
                 HttpStatusCode.OK,
-                TasksRepository.delete(taskId.toLong())
+                tasksRepository.delete(taskId.toLong())
             )
         }
     }

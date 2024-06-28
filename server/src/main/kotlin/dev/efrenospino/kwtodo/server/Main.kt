@@ -1,5 +1,6 @@
 package dev.efrenospino.kwtodo.server
 
+import dev.efrenospino.kwtodo.server.data.TasksRepository
 import dev.efrenospino.kwtodo.server.service.tasks
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
@@ -49,6 +50,6 @@ fun Application.module() {
     }
 
     routing {
-        tasks()
+        tasks(tasksRepository = TasksRepository(filePath = env["DATABASE_PATH"]))
     }
 }
