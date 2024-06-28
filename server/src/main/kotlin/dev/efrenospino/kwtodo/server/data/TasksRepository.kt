@@ -26,11 +26,7 @@ object TasksRepository {
         }
     }
 
-    fun update(
-        taskId: Long,
-        name: String?,
-        completed: Boolean?
-    ): List<Task> {
+    fun update(taskId: Long, name: String?, completed: Boolean?): List<Task> {
         return tasksDB.singleTransactionWithResult {
             val task = tasksDB.taskQueries.selectOne(id = taskId).executeAsOne()
             val updatedTask =

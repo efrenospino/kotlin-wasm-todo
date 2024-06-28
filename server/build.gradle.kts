@@ -26,7 +26,7 @@ dependencies {
 ktlint {
     filter {
         exclude { entry ->
-            entry.file.path.contains("/generated/")
+            entry.file.path.contains("/build/")
         }
     }
 }

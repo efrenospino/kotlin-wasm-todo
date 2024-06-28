@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.buildKonfig)
+    alias(libs.plugins.ktlint)
 }
 
 kotlin {
@@ -34,7 +35,6 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.json)
         }
-
     }
 }
 
@@ -42,9 +42,16 @@ compose.experimental {
     web.application {}
 }
 
+ktlint {
+    filter {
+        exclude { entry ->
+            entry.file.path.contains("/build/")
+        }
+    }
+}
+
 buildkonfig {
     packageName = "dev.efrenospino.kwtodo"
-
     defaultConfigs {
         buildConfigField(
             FieldSpec.Type.STRING,
@@ -52,5 +59,4 @@ buildkonfig {
             System.getenv("API_URL") ?: "http://0.0.0.0:8080"
         )
     }
-
 }

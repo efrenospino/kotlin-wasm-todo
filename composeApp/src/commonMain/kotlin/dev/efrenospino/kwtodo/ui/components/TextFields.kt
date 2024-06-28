@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SearchBox(onValueChange: (String) -> Unit = {}) {
-
     var searchTaskText by remember { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
     var searchJob: Job? = null

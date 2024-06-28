@@ -35,10 +35,12 @@ object TasksApi {
     }
 
     suspend fun create(name: String): List<Task> {
-        return client.submitForm("/v1/tasks",
+        return client.submitForm(
+            "/v1/tasks",
             formParameters = Parameters.build {
                 append("name", name)
-            }) {
+            }
+        ) {
             accept(ContentType.Any)
         }.body<List<Task>>()
     }

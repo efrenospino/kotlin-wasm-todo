@@ -12,5 +12,3 @@ fun App() {
         Home(tasksRepository = TasksRepository(tasksApi = TasksApi))
     }
 }
-
-

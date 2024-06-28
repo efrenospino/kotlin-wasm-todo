@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun Home(tasksRepository: TasksRepository) {
-
     var allTasks by remember { mutableStateOf(emptyList<Task>()) }
     var editableTask: Task? by remember { mutableStateOf(null) }
     val coroutineScope = rememberCoroutineScope()
@@ -39,7 +38,6 @@ fun Home(tasksRepository: TasksRepository) {
             modifier = Modifier.padding(paddingValues).fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             SearchBox {
                 coroutineScope.launch {
                     allTasks = tasksRepository.getAllTasks(search = it)
@@ -49,9 +47,8 @@ fun Home(tasksRepository: TasksRepository) {
             LazyColumn(
                 modifier = Modifier.padding(10.dp).fillMaxHeight(),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 items(allTasks) { task ->
                     if (editableTask == task) {
                         EditableTaskCard(text = task.name) { name ->
@@ -111,4 +108,3 @@ fun Home(tasksRepository: TasksRepository) {
         }
     }
 }
-

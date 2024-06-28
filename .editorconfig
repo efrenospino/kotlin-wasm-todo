@@ -429,6 +429,8 @@ ij_kotlin_wrap_elvis_expressions = 1
 ij_kotlin_wrap_expression_body_functions = 1
 ij_kotlin_wrap_first_method_in_call_chain = false
 ktlint_standard_no-wildcard-imports = disabled
+ktlint_code_style = android_studio
+ktlint_function_naming_ignore_when_annotated_with = Composable
 
 [{*.markdown,*.md}]
 ij_markdown_force_one_space_after_blockquote_symbol = true

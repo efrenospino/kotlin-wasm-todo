@@ -26,7 +26,6 @@ fun SaveButton(onClick: () -> Unit = {}) {
     }
 }
 
-
 @Composable
 fun CreateButton(onClick: () -> Unit = {}) {
     Button(

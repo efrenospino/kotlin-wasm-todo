@@ -46,10 +46,7 @@ fun RootRoute.tasks() {
     }
 }
 
-suspend fun RoutingCall.checkParam(
-    paramValue: String?,
-    call: suspend (String) -> Unit
-) {
+suspend fun RoutingCall.checkParam(paramValue: String?, call: suspend (String) -> Unit) {
     if (paramValue == null) {
         respond(HttpStatusCode.BadRequest)
     } else {

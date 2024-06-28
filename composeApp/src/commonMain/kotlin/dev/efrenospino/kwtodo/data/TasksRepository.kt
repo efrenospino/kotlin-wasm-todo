@@ -23,5 +23,4 @@ class TasksRepository(private val tasksApi: TasksApi) {
     suspend fun updateTask(task: Task, name: String): List<Task> {
         return tasksApi.update(task.copy(name = name))
     }
-
 }
