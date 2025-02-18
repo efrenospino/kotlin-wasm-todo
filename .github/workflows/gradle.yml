@@ -53,9 +53,10 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v3
       - name: Set up SQLite
-        uses: actions/setup-sqlite-environment@v1
-        with:
-          sqlite-version: '3.35.5'
+        run: sudo apt-get install sqlite3
+      - name: Run SQLite command
+        run: |
+          sqlite3 kwtodo.db "VACUUM;"
       - name: Restore SQLite database (if exists)
         uses: actions/download-artifact@v4
         with:
@@ -66,7 +67,7 @@ jobs:
       - name: Run application
         env:
           PORT: 8080
-          DB_PATH: ./database.db
+          DATABASE_PATH: ./kwtodo.db
         run: |
           java -jar ./server/build/libs/server-all.jar
       - name: Save SQLite database
