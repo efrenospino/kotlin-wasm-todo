@@ -20,6 +20,7 @@ jobs:
         uses: gradle/gradle-build-action@v3
       - name: Check lint
         run: ./gradlew ktlintCheck
+
   test:
     needs: lint
     runs-on: ubuntu-latest
@@ -44,42 +45,30 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-          
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v3
-
-      - name: Set environment variables for PORT and DB-PATH
-        env:
-          PORT: 8080             
-          DB_PATH: ./database.db
-        
       - name: Set up SQLite
         uses: actions/setup-sqlite-environment@v1
         with:
           sqlite-version: '3.35.5'
-          
       - name: Restore SQLite database (if exists)
         uses: actions/download-artifact@v3
         with:
           name: sqlite-db
           path: ./
-        
       - name: Build application
         run: ./gradlew assemble
-        
       - name: Run application
         env:
-          PORT: ${{ env.PORT }}
-          DB_PATH: ${{ env.DB_PATH }
+          PORT: 8080
+          DB_PATH: ./database.db
         run: |
           java -jar ./server/build/libs/server-all.jar
-          
       - name: Save SQLite database
         uses: actions/upload-artifact@v3
         with:
