@@ -57,11 +57,6 @@ jobs:
       - name: Run SQLite command
         run: |
           sqlite3 kwtodo.db "VACUUM;"
-      - name: Restore SQLite database (if exists)
-        uses: actions/download-artifact@v4
-        with:
-          name: sqlite-db
-          path: ./
       - name: Build application
         run: ./gradlew assemble
       - name: Run application
@@ -70,8 +65,3 @@ jobs:
           DATABASE_PATH: ./kwtodo.db
         run: |
           java -jar ./server/build/libs/server-all.jar
-      - name: Save SQLite database
-        uses: actions/upload-artifact@v4
-        with:
-          name: sqlite-db
-          path: ./kwtodo.db
