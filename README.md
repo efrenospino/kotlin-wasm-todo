@@ -1,6 +1,8 @@
 # KW Todo
 
+![kotlin-version](https://img.shields.io/badge/kotlin-1.9.21-blue?logo=kotlin)
 [![.github/workflows/gradle.yml](https://github.com/efrenospino/kotlin-wasm-todo/actions/workflows/gradle.yml/badge.svg)](https://github.com/efrenospino/kotlin-wasm-todo/actions/workflows/gradle.yml)
+[![ktlint](https://img.shields.io/badge/ktlint%20code--style-%E2%9D%A4-FF4081)](https://pinterest.github.io/ktlint/)
 
 A Kotlin Wasm Todo Application. Built with Kotlin Multiplatform with Wasm as the only target in mind. The main goal is
 to try Kotlin Multiplatform for web, specifically for Wasm, to build a very simple app.
