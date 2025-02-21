@@ -49,8 +49,7 @@ and build this small app for exploration.
 
 ### Setting up the database
 
-This project uses an embedded SQLite database. Once the server is started the file will be located
-on `/server/kwtodo.db` (not included in version control).
+This project uses an embedded in memory SQLite database. Once the server is started a new database is created.
 
 ### Running the server
 

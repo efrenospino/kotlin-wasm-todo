@@ -8,8 +8,9 @@ import dev.efrenospino.kwtodo.server.util.mapTaskToSharedModel
 import dev.efrenospino.kwtodo.server.util.singleTransactionWithResult
 import dev.efrenospino.kwtodo.server.util.toLong
 
-class TasksRepository(filePath: String?) {
-    private val driver: SqlDriver = TasksDatabaseDriver.instance(filePath = filePath)
+class TasksRepository {
+
+    private val driver: SqlDriver = TasksDatabaseDriver.instance()
     private val tasksDB: TasksDatabase = TasksDatabase(driver)
 
     init {

@@ -52,16 +52,10 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v3
-      - name: Set up SQLite
-        run: sudo apt-get install sqlite3
-      - name: Run SQLite command
-        run: |
-          sqlite3 kwtodo.db "VACUUM;"
       - name: Build application
         run: ./gradlew assemble
       - name: Run application
         env:
           PORT: 8080
-          DATABASE_PATH: ./kwtodo.db
         run: |
           java -jar ./server/build/libs/server-all.jar

@@ -50,6 +50,6 @@ fun Application.module() {
     }
 
     routing {
-        tasks(tasksRepository = TasksRepository(filePath = env["DATABASE_PATH"]))
+        tasks(tasksRepository = TasksRepository())
     }
 }

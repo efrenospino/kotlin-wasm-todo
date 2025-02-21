@@ -1,8 +1,5 @@
 FROM gradle:8.4.0-jdk17 AS builder
 
-ARG DATABASE_PATH
-ENV DATABASE_PATH=${DATABASE_PATH}
-
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 
